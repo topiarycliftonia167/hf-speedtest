@@ -12,6 +12,8 @@ import time
 
 import httpx
 
+from .location import get_server_location
+
 URL = "https://aws.cdn.hf.co/fast/5gb"
 
 NUM_STREAMS = 8           # xhr_dlMultistream
@@ -88,6 +90,9 @@ async def ticker(state: State) -> None:
 
 
 async def main() -> None:
+    server_location = await get_server_location(URL)
+    print(f"server location: {server_location}")
+
     state = State()
     limits = httpx.Limits(max_connections=NUM_STREAMS * 2, max_keepalive_connections=NUM_STREAMS)
     async with httpx.AsyncClient(limits=limits, http2=False, follow_redirects=True) as client:
