@@ -2,14 +2,11 @@
 
 Sends a HEAD request and inspects:
   - x-hf-cdn-pop  (hf-cdn: aws-/dev-/gcp- prefixed region ids)
-  - x-amz-cf-pop  (CloudFront: 3-letter IATA airport code)
 
-Returns a "City, Country" label or "Unknown" when neither header is present.
+Returns a "City, Country" label or "Unknown" when the header is not present.
 """
 
 import httpx
-
-from .iata import MAJOR_AIRPORT_IATAS
 
 # AWS/GCP region → "City, Country" labels. Used to resolve hf-cdn pop_id values
 # emitted via the x-hf-cdn-pop header.
@@ -115,8 +112,8 @@ def resolve_hf_cdn_pop(pop_id: str) -> str:
 async def get_server_location(url: str) -> tuple[str, str]:
     """Resolve which CDN PoP `url` is being served from.
 
-    Returns a (raw_header_value, resolved_label) tuple. When neither
-    x-hf-cdn-pop nor x-amz-cf-pop is present, returns ("", "Unknown").
+    Returns a (raw_header_value, resolved_label) tuple. When
+    x-hf-cdn-pop is not present, returns ("", "Unknown").
     """
     async with httpx.AsyncClient(follow_redirects=True) as client:
         response = await client.head(url)
@@ -124,13 +121,5 @@ async def get_server_location(url: str) -> tuple[str, str]:
     hf_pop = response.headers.get("x-hf-cdn-pop")
     if hf_pop is not None:
         return hf_pop, resolve_hf_cdn_pop(hf_pop)
-
-    cf_pop = response.headers.get("x-amz-cf-pop")
-    if cf_pop is not None:
-        iata = cf_pop.upper()[:3]
-        if iata in MAJOR_AIRPORT_IATAS:
-            city, country = MAJOR_AIRPORT_IATAS[iata]
-            return cf_pop, f"{city}, {country}"
-        return cf_pop, "Unknown"
 
     return "", "Unknown"
